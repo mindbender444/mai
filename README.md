@@ -1,12 +1,12 @@
 ### Project only accepting patches
 This project is not actively developed but *will* accept Pull Requests.
 
-Forked on 10-13 by mindbender444. I recommend to use the original version by helmuthdu.
+
 
 <h1 align="center">
-  <a href=https://www.archlinux.org/>Archlinux</a> Ultimate Installer
+  <a href=https://www.archlinux.org/>Archlinux</a> Mindbender's Installer
 </h1>
-<h4 align="center">Installation & Configuration of archlinux has never been much easier!</h4>
+<h4 align="center">Forked on 10-13-2020 by mindbender444. I recommend to use the original version by helmuthdu.</h4>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Maintained%3F-Yes-green?style=for-the-badge">
