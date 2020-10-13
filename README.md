@@ -1,20 +1,7 @@
-### Project only accepting patches
-This project is not actively developed but *will* accept Pull Requests.
-
-
-
 <h1 align="center">
-  <a href=https://www.archlinux.org/>Archlinux</a> Mindbender's Installer
+  Mindbender's <a href=https://www.archlinux.org/>Archlinux</a> Installer
 </h1>
 <h4 align="center">Forked on 10-13-2020 by mindbender444. I recommend to use the original version by helmuthdu.</h4>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Maintained%3F-Yes-green?style=for-the-badge">
-  <img src="https://img.shields.io/github/license/helmuthdu/aui?style=for-the-badge">
-  <img src="https://img.shields.io/github/issues/helmuthdu/aui?color=violet&style=for-the-badge">
-  <img src="https://img.shields.io/github/stars/helmuthdu/aui?style=for-the-badge">
-  <img src="https://img.shields.io/github/forks/helmuthdu/aui?color=teal&style=for-the-badge">
-</p>
 
 ## Note
 * You can first try it in a `VirtualMachine`
