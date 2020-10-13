@@ -164,6 +164,7 @@ create_partition_scheme() {
     4)
       create_partition
       setup_luks
+	  btrfs_on_luks
       ;;
     5)
       modprobe dm-mod
@@ -308,7 +309,55 @@ format_partitions() {
       fi
     done
   }
+#}}}
+#SELECT|BTRFS_ON_LUKS {{{
+btrfs_on_luks() {
+  print_title "https://wiki.archlinux.org/index.php/File_Systems"
+  print_info "This step will select and format the selected partition where archlinux will be installed"
+  print_danger "\tAll data on the ROOT and SWAP partition will be LOST."
+  i=0
 
+  #block_list=($(lsblk | grep 'part\|lvm' | awk '{print substr($1,3)}'))
+  
+  cryptsetup open /dev/sda2 cryptroot
+
+  # check if there is no partition
+  if [[ ${#block_list[@]} -eq 0 ]]; then
+    echo "No partition found"
+    exit 0
+  fi
+
+  partitions_list=()
+  for OPT in "${block_list[@]}"; do
+    check_lvm=$(echo "$OPT" | grep lvm)
+    if [[ -z $check_lvm ]]; then
+      partitions_list+=("/dev/$OPT")
+    else
+      partitions_list+=("/dev/mapper/$OPT")
+    fi
+  done
+
+  # partitions based on boot system
+  if [[ $UEFI -eq 1 ]]; then
+    partition_name=("root" "EFI" "swap" "another")
+  else
+    partition_name=("root" "swap" "another")
+  fi
+
+  select_filesystem() {
+    filesystems_list=("btrfs" "ext2" "ext3" "ext4" "f2fs" "jfs" "nilfs2" "ntfs" "reiserfs" "vfat" "xfs")
+    PS3="$prompt1"
+    echo -e "Select filesystem:\n"
+    select filesystem in "${filesystems_list[@]}"; do
+      if contains_element "${filesystem}" "${filesystems_list[@]}"; then
+        break
+      else
+        invalid_option
+      fi
+    done
+  }
+  
+  
   disable_partition() {
     #remove the selected partition from list
     unset partitions_list["${partition_number}"]
@@ -879,7 +928,7 @@ check_connection
 check_trim
 pacman -Sy
 while true; do
-  print_title "ARCHLINUX ULTIMATE INSTALL - https://github.com/helmuthdu/aui"
+  print_title "MINDBENDERS ARCHLINUX INSTALL - https://github.com/mindbender444/aui"
   echo " 1) $(mainmenu_item "${checklist[1]}" "Select Keymap" "${KEYMAP}")"
   echo " 2) $(mainmenu_item "${checklist[2]}" "Select Editor" "${EDITOR}")"
   echo " 3) $(mainmenu_item "${checklist[3]}" "Configure Mirrorlist" "${country_name} (${country_code})")"
