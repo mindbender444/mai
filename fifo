@@ -162,6 +162,8 @@ create_partition_scheme() {
       setup_lvm
       ;;
     4)
+      create_partition
+      setup_luks
       btrfs_on_luks
       ;;
     5)
@@ -967,6 +969,5 @@ done
 #}}}
 
 btrfs_on_luks () {
-cryptsetup -y -v luksFormat /dev/sda2
 cryptsetup open /dev/sda2 cryptroot
 }
