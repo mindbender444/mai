@@ -143,7 +143,7 @@ create_partition_scheme() {
   print_title "https://wiki.archlinux.org/index.php/Partitioning"
   print_info "Partitioning a hard drive allows one to logically divide the available space into sections that can be accessed independently of one another."
   print_warning "Maintain Current does not work with LUKS"
-  partition_layouts=("Default" "LVM" "LVM+LUKS" "LUKS" "Maintain Current")
+  partition_layouts=("Default" "LVM" "LVM+LUKS" "BTRFS+LUKS" "Maintain Current")
   PS3="$prompt1"
   echo -e "Select partition scheme:"
   select OPT in "${partition_layouts[@]}"; do
@@ -162,9 +162,7 @@ create_partition_scheme() {
       setup_lvm
       ;;
     4)
-      create_partition
-      setup_luks
-	  btrfs_on_luks
+      btrfs_on_luks
       ;;
     5)
       modprobe dm-mod
@@ -967,3 +965,9 @@ while true; do
   done
 done
 #}}}
+
+btrfs_on_luks () {
+
+print_warning "HELLO WORLD"
+
+}
