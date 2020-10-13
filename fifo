@@ -97,8 +97,8 @@ configure_mirrorlist() {
   mv -i /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
   
   # Get fastest mirrors of the country by Reflector.
-  echo " Fetching mirrors located in $country_name..."
-  reflector --country "$country_name" --sort rate --save /etc/pacman.d/mirrorlist
+  echo " Fetching two mirrors located in $country_name..."
+  reflector --country "$country_name" -a 2 --sort rate --save /etc/pacman.d/mirrorlist
 
   # allow global read access (required for non-root yaourt execution)
   chmod +r /etc/pacman.d/mirrorlist
