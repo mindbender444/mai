@@ -874,10 +874,20 @@ finish() {
 #}}}
 #CREATE BTRFS {{{
 btrfs_on_luks () {
+  
+  echo " Setup cryptroot on /dev/sda2..."
   cryptsetup -y -v luksFormat /dev/sda2
+  
+  echo " Unlock cryptroot..."
   cryptsetup open /dev/sda2 cryptroot
+  
+  echo " Format Btrfs on /dev/mapper/cryptroot..."
   mkfs.btrfs /dev/mapper/cryptroot
+  
+  echo " Make FAT32 on /dev/sda1..."
   mkfs.fat -F32 /dev/sda1
+  
+  echo " Mount cryptroot and create subvols..."
   mount /dev/mapper/cryptroot /mnt
   btrfs su cr /mnt/@root
   btrfs su cr /mnt/@home
@@ -887,6 +897,8 @@ btrfs_on_luks () {
   btrfs su cr /mnt/@tmp
   btrfs su cr /mnt/@swap
   btrfs su cr /mnt/@.snapshots
+
+  echo " Unmount cryptroot and mount subvols..."
   umount /mnt
   mount -o noatime,compress=lzo,space_cache,subvol=@root /dev/mapper/cryptroot /mnt
   mkdir /mnt/{boot,home,var,srv,opt,tmp,swap,.snapshots}
@@ -898,7 +910,23 @@ btrfs_on_luks () {
   mount -o nodatacow,subvol=@var /dev/mapper/cryptroot /mnt/var
   mount /dev/sda1 /mnt/boot
   MOUNTPOINT=/mnt
+  
+  pause_function
 }
+
+btrfs_cleanup () {
+   vim /etc/mkinitcpio.conf #add the following
+			MODULES=(btrfs)
+			HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)
+   
+   configure_mkinitcpio
+   
+   THEUUID=$(lsblk -dno UUID /dev/sda2)
+   GRUBCONFIG="/etc/default/grub"
+			GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet cryptdevice=UUID=4abed307-4cc2-492a-88ac-002241e01656:cryptroot root=/dev/mapper/cryptroot"
+   grub-mkconfig -o /boot/grub/grub.cfg
+    
+  }
 
 pause_function
 check_boot_system
@@ -921,7 +949,8 @@ while true; do
   echo "12) $(mainmenu_item "${checklist[12]}" "Install Bootloader" "${bootloader}")"
   echo "13) $(mainmenu_item "${checklist[13]}" "Root Password")"
   echo "======================================================================"
-  echo "14) $(mainmenu_item "${checklist[13]}" "BTRFS on LUKS Install Script")"
+  echo "14) $(mainmenu_item "${checklist[14]}" "BTRFS on LUKS")"
+  echo "15) $(mainmenu_item "${checklist[15]}" "BTRFS on LUKS cleanup")"
   echo ""
   echo " d) Done"
   echo ""
@@ -988,6 +1017,11 @@ while true; do
       umount_partitions
       create_partition_scheme
       btrfs_on_luks
+      checklist[14]=1
+      ;;
+    15)
+      btrfs_cleanup
+      checklist[15]=1
       ;;
     "d")
       finish
