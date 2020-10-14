@@ -980,6 +980,8 @@ while true; do
       checklist[13]=1
       ;;
     14)
+      umount_partitions
+      create_partition_scheme
       btrfs_on_luks
       ;;
     "d")
