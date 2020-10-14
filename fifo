@@ -33,6 +33,9 @@ else
   exit 1
 fi
 
+#Add more space for the COWS
+mount -o remount,size=2G /run/archiso/cowspace
+
 #ARCHLINUX INSTALL SCRIPTS MODE {{{
 #SELECT KEYMAP {{{
 select_keymap() {
@@ -894,6 +897,7 @@ btrfs_on_luks () {
   mount -o nodatacow,subvol=@swap /dev/mapper/cryptroot /mnt/swap
   mount -o nodatacow,subvol=@var /dev/mapper/cryptroot /mnt/var
   mount /dev/sda1 /mnt/boot
+  MOUNTPOINT=/mnt
 }
 
 pause_function
