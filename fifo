@@ -875,7 +875,7 @@ btrfs_on_luks () {
   cryptsetup open /dev/sda2 cryptroot
   mkfs.btrfs /dev/mapper/cryptroot
   mkfs.fat -F32 /dev/sda1
-  mount /dev/mapper/crypt /mnt
+  mount /dev/mapper/cryptroot /mnt
   btrfs su cr /mnt/@root
   btrfs su cr /mnt/@home
   btrfs su cr /mnt/@var
@@ -885,14 +885,14 @@ btrfs_on_luks () {
   btrfs su cr /mnt/@swap
   btrfs su cr /mnt/@.snapshots
   umount /mnt
-  mount -o noatime,compress=lzo,space_cache,subvol=@root /dev/mapper/crypt /mnt
+  mount -o noatime,compress=lzo,space_cache,subvol=@root /dev/mapper/cryptroot /mnt
   mkdir /mnt/{boot,home,var,srv,opt,tmp,swap,.snapshots}
-  mount -o noatime,compress=lzo,space_cache,subvol=@srv /dev/mapper/crypt /mnt/srv
-  mount -o noatime,compress=lzo,space_cache,subvol=@tmp /dev/mapper/crypt /mnt/tmp
-  mount -o noatime,compress=lzo,space_cache,subvol=@opt /dev/mapper/crypt /mnt/opt
-  mount -o noatime,compress=lzo,space_cache,subvol=@.snapshots /dev/mapper/crypt /mnt/.snapshots
-  mount -o nodatacow,subvol=@swap /dev/mapper/crypt /mnt/swap
-  mount -o nodatacow,subvol=@var /dev/mapper/crypt /mnt/var
+  mount -o noatime,compress=lzo,space_cache,subvol=@srv /dev/mapper/cryptroot /mnt/srv
+  mount -o noatime,compress=lzo,space_cache,subvol=@tmp /dev/mapper/cryptroot /mnt/tmp
+  mount -o noatime,compress=lzo,space_cache,subvol=@opt /dev/mapper/cryptroot /mnt/opt
+  mount -o noatime,compress=lzo,space_cache,subvol=@.snapshots /dev/mapper/cryptroot /mnt/.snapshots
+  mount -o nodatacow,subvol=@swap /dev/mapper/cryptroot /mnt/swap
+  mount -o nodatacow,subvol=@var /dev/mapper/cryptroot /mnt/var
   mount /dev/sda1 /mnt/boot
 }
 
@@ -916,7 +916,8 @@ while true; do
   echo "11) $(mainmenu_item "${checklist[11]}" "Configure Mkinitcpio")"
   echo "12) $(mainmenu_item "${checklist[12]}" "Install Bootloader" "${bootloader}")"
   echo "13) $(mainmenu_item "${checklist[13]}" "Root Password")"
-  echo "13) $(mainmenu_item "${checklist[13]}" "BTRFS on LUKS Install Script")"
+  echo "======================================================================"
+  echo "14) $(mainmenu_item "${checklist[13]}" "BTRFS on LUKS Install Script")"
   echo ""
   echo " d) Done"
   echo ""
