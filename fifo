@@ -874,6 +874,11 @@ finish() {
   exit 0
 }
 #}}}
+#CREATE BTRFS {{{
+btrfs_on_luks () {
+  cryptsetup open /dev/sda2 crypt
+  mkfs.btrfs /dev/mapper/crypt
+}
 
 pause_function
 check_boot_system
@@ -968,6 +973,4 @@ while true; do
 done
 #}}}
 
-btrfs_on_luks () {
-cryptsetup open /dev/sda2 crypt
-}
+
