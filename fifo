@@ -930,12 +930,12 @@ btrfs_cleanup () {
 	#sed -n '/pattern/!p' file
 	
 	#Append line after match
-	#sed  '/\[option\]/a Hello World' input
+	# sed  '/\[option\]/a Hello World' input
 	
 	#Insert line before match
-        #sed  '/\[option\]/i Hello World' input
+        # sed  '/\[option\]/i Hello World' input
    
-   sed  '/\MODULES=(\]/a btrfs' "/etc/mkinitcpio.conf
+   sed  '/\MODULES=(\]/a btrfs' /etc/mkinitcpio.conf
    sed  '/\block (\]/a encrypt' /etc/mkinitcpio.conf
    sed  '/\quiet (\]/a cryptdevice=UUID=$THEUUID:cryptroot root=/dev/mapper/cryptroot' /etc/default/grub
    configure_mkinitcpio		
