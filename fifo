@@ -951,7 +951,7 @@ check_connection
 check_trim
 pacman -Sy
 while true; do
-  print_title "MINDBENDERS ARCH INSTALL - https://github.com/mindbender444/aui"
+  print_title "MINDBENDERS ARCHLINUX INSTALL - https://github.com/mindbender444/aui"
   echo " 1) $(mainmenu_item "${checklist[1]}" "Select Keymap" "${KEYMAP}")"
   echo " 2) $(mainmenu_item "${checklist[2]}" "Select Editor" "${EDITOR}")"
   echo " 3) $(mainmenu_item "${checklist[3]}" "Configure Mirrorlist" "${country_name} (${country_code})")"
