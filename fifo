@@ -916,6 +916,7 @@ btrfs_on_luks () {
   echo " Done!..."
   
   pause_function
+  
 }
 
 btrfs_cleanup () {
@@ -932,7 +933,7 @@ btrfs_cleanup () {
 	#sed  '/\[option\]/a Hello World' input
 	
 	#Insert line before match
-    #sed  '/\[option\]/i Hello World' input
+        #sed  '/\[option\]/i Hello World' input
    
    sed  '/\MODULES=(\]/a btrfs' "/etc/mkinitcpio.conf
    sed  '/\block (\]/a encrypt' /etc/mkinitcpio.conf
@@ -942,6 +943,7 @@ btrfs_cleanup () {
    
    echo " Done!..."
    pause_function
+   
   }
 #}}}
 
