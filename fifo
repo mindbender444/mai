@@ -910,22 +910,38 @@ btrfs_on_luks () {
   mount -o nodatacow,subvol=@var /dev/mapper/cryptroot /mnt/var
   mount /dev/sda1 /mnt/boot
   MOUNTPOINT=/mnt
+
+  echo " Should be mounted correctly at /mnt..."
+  
+  echo " Done!..."
   
   pause_function
 }
 
 btrfs_cleanup () {
-   vim /etc/mkinitcpio.conf #add the following
-			MODULES=(btrfs)
-			HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)
    
-   configure_mkinitcpio
-   
+   echo " Updating grub with UUID and mkinitcpio.conf with correct modules and hooks..."
    THEUUID=$(lsblk -dno UUID /dev/sda2)
-   GRUBCONFIG="/etc/default/grub"
-			GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet cryptdevice=UUID=4abed307-4cc2-492a-88ac-002241e01656:cryptroot root=/dev/mapper/cryptroot"
+
+   	#Replace String in a File with the `sed` Command
+	#The basic syntax of the `sed` command for replacing the particular string in a file is given below.
+	#sed -i 's/search_string/replace_string/' filename
+	#sed -n '/pattern/!p' file
+	
+	#Append line after match
+	#sed  '/\[option\]/a Hello World' input
+	
+	#Insert line before match
+    #sed  '/\[option\]/i Hello World' input
+   
+   sed  '/\MODULES=(\]/a btrfs' "/etc/mkinitcpio.conf
+   sed  '/\block (\]/a encrypt' /etc/mkinitcpio.conf
+   sed  '/\quiet (\]/a cryptdevice=UUID=$THEUUID:cryptroot root=/dev/mapper/cryptroot' /etc/default/grub
+   configure_mkinitcpio		
    grub-mkconfig -o /boot/grub/grub.cfg
-    
+   
+   echo " Done!..."
+   pause_function
   }
 
 pause_function
@@ -1033,5 +1049,3 @@ while true; do
   done
 done
 #}}}
-
-
