@@ -969,5 +969,5 @@ done
 #}}}
 
 btrfs_on_luks () {
-cryptsetup open /dev/sda2 cryptroot
+cryptsetup open /dev/sda2 crypt
 }
