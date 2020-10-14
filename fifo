@@ -878,6 +878,26 @@ finish() {
 btrfs_on_luks () {
   cryptsetup open /dev/sda2 crypt
   mkfs.btrfs /dev/mapper/crypt
+  mkfs.fat -F32 /dev/sda1
+  mount /dev/mapper/crypt /mnt
+  btrfs su cr /mnt/@root
+  btrfs su cr /mnt/@home
+  btrfs su cr /mnt/@var
+  btrfs su cr /mnt/@srv
+  btrfs su cr /mnt/@opt
+  btrfs su cr /mnt/@tmp
+  btrfs su cr /mnt/@swap
+  btrfs su cr /mnt/@.snapshots
+  umount /mnt
+  mount -o noatime,compress=lzo,space_cache,subvol=@root /dev/mapper/crypt /mnt
+  mkdir /mnt/{boot,home,var,srv,opt,tmp,swap,.snapshots}
+  mount -o noatime,compress=lzo,space_cache,subvol=@srv /dev/mapper/crypt /mnt/srv
+  mount -o noatime,compress=lzo,space_cache,subvol=@tmp /dev/mapper/crypt /mnt/tmp
+  mount -o noatime,compress=lzo,space_cache,subvol=@opt /dev/mapper/crypt /mnt/opt
+  mount -o noatime,compress=lzo,space_cache,subvol=@.snapshots /dev/mapper/crypt /mnt/.snapshots
+  mount -o nodatacow,subvol=@swap /dev/mapper/crypt /mnt/swap
+  mount -o nodatacow,subvol=@var /dev/mapper/crypt /mnt/var
+  mount /dev/sda1 /mnt/boot
 }
 
 pause_function
