@@ -272,7 +272,7 @@ format_partitions() {
   print_danger "\tAll data on the ROOT and SWAP partition will be LOST."
   i=0
 
-  block_list=($(lsblk | grep 'part\|lvm\|crypt' | awk '{print substr($1,3)}'))
+  block_list=($(lsblk | grep 'part\|lvm\|mapper\crypt' | awk '{print substr($1,3)}'))
 
   # check if there is no partition
   if [[ ${#block_list[@]} -eq 0 ]]; then
@@ -282,7 +282,7 @@ format_partitions() {
 
   partitions_list=()
   for OPT in "${block_list[@]}"; do
-    check_lvm=$(echo "$OPT" | grep lvm)
+    check_lvm=$(echo "$OPT" | grep 'lvm\|mapper')
     if [[ -z $check_lvm ]]; then
       partitions_list+=("/dev/$OPT")
     else
