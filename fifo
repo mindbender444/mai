@@ -943,6 +943,7 @@ btrfs_cleanup () {
    echo " Done!..."
    pause_function
   }
+#}}}
 
 pause_function
 check_boot_system
