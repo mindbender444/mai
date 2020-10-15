@@ -921,8 +921,12 @@ btrfs_on_luks () {
 
 btrfs_cleanup () {
    
+   
    echo " Updating grub with UUID and mkinitcpio.conf with correct modules and hooks..."
    THEUUID=$(lsblk -dno UUID /dev/sda2)
+   
+   #Enter chroot environment
+   arch-chroot "${MOUNTPOINT}"
 
    	#Replace String in a File with the `sed` Command
 	#The basic syntax of the `sed` command for replacing the particular string in a file is given below.
@@ -940,6 +944,9 @@ btrfs_cleanup () {
    sed  '/\quiet (\]/a cryptdevice=UUID=$THEUUID:cryptroot root=/dev/mapper/cryptroot' /etc/default/grub
    configure_mkinitcpio		
    grub-mkconfig -o /boot/grub/grub.cfg
+   
+   #Exit chroot
+   exit
    
    echo " Done!..."
    pause_function
