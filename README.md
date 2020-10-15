@@ -1,7 +1,7 @@
 <h1 align="center">
   Mindbender's <a href=https://www.archlinux.org/>Archlinux</a> Installer
 </h1>
-<h4 align="center">Forked on 10-13-2020 by mindbender444. I recommend to use the original version by helmuthdu.</h4>
+<h4 align="center">Forked on 10-13-2020 from <a href=https://github.com/helmuthdu/aui/>aui</a> by mindbender444. I recommend to use the original version by helmuthdu as this one is probably broke...</h4>
 
 ## Note
 * You can first try it in a `VirtualMachine`
